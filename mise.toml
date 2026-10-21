@@ -1,0 +1,13 @@
+#:schema https://mise.jdx.dev/schema/mise.json
+
+[settings]
+lockfile = true
+
+[env]
+KERL_BUILD_DOCS = 'yes'
+ERL_AFLAGS = '-kernel shell_history enabled'
+
+[tools]
+erlang = '29.1.2'
+elixir = '1.20.4-otp-29'
+postgres = '18.6'
