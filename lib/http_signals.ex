@@ -45,8 +45,12 @@ defmodule HTTPSignals do
     )
   end
 
-  defp repo() do
+  def repo() do
     Application.get_env(:http_signals, :repo) ||
       raise("You need to define a repository for the Ecto schema of an HTTP Signal")
+  end
+
+  def debug?() do
+    Application.get_env(:http_signals, :debug?, false)
   end
 end

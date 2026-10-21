@@ -114,8 +114,8 @@ defmodule HTTPSignals.OutboundRecorder do
       response =
         try do
           supress_logging(fn ->
-            Core.Support.update_http_signal_with_response(
-              Core.Support.get_http_signal(http_signal_id),
+            HTTPSignals.update_http_signal_with_response(
+              HTTPSignals.get_http_signal(http_signal_id),
               %{
                 status: response.status,
                 headers: response.headers,
@@ -157,8 +157,8 @@ defmodule HTTPSignals.OutboundRecorder do
       response =
         try do
           supress_logging(fn ->
-            Core.Support.update_http_signal_with_postprocessing(
-              Core.Support.get_http_signal(http_signal_id),
+            HTTPSignals.update_http_signal_with_postprocessing(
+              HTTPSignals.get_http_signal(http_signal_id),
               response.body
             )
           end)
@@ -190,7 +190,7 @@ defmodule HTTPSignals.OutboundRecorder do
     Logger.debug(message)
   end
 
-  defp alert(exception, message) do
+  defp alert(_exception, message) do
     Logger.configure(level: :debug)
     Logger.debug(message)
   end
@@ -199,7 +199,7 @@ defmodule HTTPSignals.OutboundRecorder do
   defp body(body), do: IO.iodata_to_binary(body)
 
   defp supress_logging(function) when is_function(function, 0) do
-    if Core.env() == "dev" do
+    if HTTPSignals.debug?() do
       Logger.configure(level: :error)
 
       tap(function.(), fn _result ->
@@ -223,13 +223,6 @@ defmodule HTTPSignals.OutboundRecorder do
   defp insert_response_step_after(%Req.Request{} = request, name, step)
        when is_atom(name) and is_tuple(step) do
     steps = insert_step(request.response_steps, name, step, :after)
-
-    %{request | response_steps: steps}
-  end
-
-  defp insert_response_step_before(%Req.Request{} = request, name, step)
-       when is_atom(name) and is_tuple(step) do
-    steps = insert_step(request.response_steps, name, step, :before)
 
     %{request | response_steps: steps}
   end

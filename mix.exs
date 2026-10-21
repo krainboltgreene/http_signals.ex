@@ -8,7 +8,7 @@ defmodule HTTPSignals.MixProject do
         "Intercepting Req requests and storing the data (response and request) in your database.",
       package: %{
         links: %{"GitHub" => "https://github.com/krainboltgreene/http_signals.ex"},
-        licenses: ["Hippocratic-3.0"]
+        licenses: ["Hippocratic-3.0-core"]
       },
       version: "1.0.0",
       elixir: "~> 1.20",
